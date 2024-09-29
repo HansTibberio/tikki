@@ -1,12 +1,12 @@
 import sys
 import os
 from intermediate_representation import IntermediateCodeGenerator
-import src.tkcode as tkcode
+import tkcode as tkcode
 
-from src.generator import CodeGenerator
-from src.scanner import Scanner
-from src.parser import Parser
-from src.error import TikkiError
+from generator import CodeGenerator
+from scanner import Scanner
+from parser import Parser
+from error import TikkiError
 
 
 class Tikki:

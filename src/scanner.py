@@ -1,5 +1,5 @@
-from src.token_type import TokenType
-from src.tokens import Token
+from token_type import TokenType
+from tokens import Token
 
 
 class Scanner:

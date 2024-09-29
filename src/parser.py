@@ -1,7 +1,7 @@
-from src.token_type import TokenType
-from src.expr import *
-from src.stmt import *
-from src.error import ParseError
+from token_type import TokenType
+from expr import *
+from stmt import *
+from error import ParseError
 
 
 class Parser:
