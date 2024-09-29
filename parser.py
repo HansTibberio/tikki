@@ -9,6 +9,7 @@ class Parser:
         self.error = error
         self.tokens = tokens
         self.current = 0
+        self.literal_pool = []
 
     def parse(self):
         statements = []
@@ -352,6 +353,7 @@ class Parser:
             return Literal(None)
 
         if self.match(TokenType.NUMBER, TokenType.STRING):
+            self.literal_pool.append(self.previous().literal)
             return Literal(self.previous().literal)
 
         if self.match(TokenType.IDENTIFIER):
