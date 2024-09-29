@@ -1,3 +1,6 @@
 __pycache__/
-file.as
-test.red
+*.as
+*.mc
+*.red
+register_allocator/
+intermediate_representation.py
