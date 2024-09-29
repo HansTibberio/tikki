@@ -1,11 +1,12 @@
 import sys
 import os
-import tkcode
+from intermediate_representation import IntermediateCodeGenerator
+import src.tkcode as tkcode
 
-from generator import CodeGenerator
-from scanner import Scanner
-from parser import Parser
-from error import TikkiError
+from src.generator import CodeGenerator
+from src.scanner import Scanner
+from src.parser import Parser
+from src.error import TikkiError
 
 
 class Tikki:
@@ -60,11 +61,18 @@ class Tikki:
         tokens = Tikki_scanner.scan_tokens()
         Tikki_parser = Parser(tokens, error)
         statements = Tikki_parser.parse()
-        print(Tikki_parser.literal_pool)
+
+        generator = IntermediateCodeGenerator()
+        generator.generate(statements)
+
+        print("\n".join(generator.instructions))
+        print("Defined Variables:", generator.variables_defined)
+        print("Used Variables:", generator.variables_used)
         # Stop if there was a syntax error.
         if TikkiError.had_error:
             return
 
+        """
         generator = CodeGenerator()
         instructions = generator.generate(statements)
 
@@ -74,6 +82,7 @@ class Tikki:
             for instruction in generator.instructions:
                 file.write(instruction + '\n')
             file.write("\nJMP .end")
+        """
 
 
 if __name__ == "__main__":

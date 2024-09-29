@@ -1,5 +1,5 @@
 from colorama import Fore, Style
-from token_type import TokenType
+from src.token_type import TokenType
 
 
 class RuntimeError(Exception):

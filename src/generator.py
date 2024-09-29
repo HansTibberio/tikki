@@ -1,8 +1,8 @@
-from token_type import TokenType
-import expr
-import stmt
-from registers import Registers
-import libraries
+from src.token_type import TokenType
+import src.expr as expr
+import src.stmt as stmt
+from src.registers import Registers
+import src.libraries as libraries
 
 
 class CodeGenerator(expr.Visitor, stmt.Visitor):
