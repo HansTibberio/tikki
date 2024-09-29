@@ -37,10 +37,10 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
  
         match expr.operator.type:
             case TokenType.GREATER_EQUAL:
-                libraries.greater_than_or_equal_function(
+                libraries.ccuge(
                     self, left_register, right_register)
             case TokenType.PIPE:
-                libraries.or_function(self, left_register, right_register)
+                libraries.ccor(self, left_register, right_register)
             case TokenType.CARET:
                 self.instructions.append(
                     f"XOR {left_register} {right_register} {left_register}")
@@ -48,10 +48,10 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
                 self.instructions.append(
                     f"AND {left_register} {right_register} {left_register}")
             case TokenType.LEFT_SHIFT:
-                libraries.left_shift(self, left_register,
+                libraries.cclls(self, left_register,
                                      right_register)
             case TokenType.RIGHT_SHIFT:
-                libraries.right_shift(self, left_register,
+                libraries.cclrs(self, left_register,
                                       right_register)
             case TokenType.PLUS:
                 self.instructions.append(
@@ -60,7 +60,7 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
                 self.instructions.append(
                     f"SUB {left_register} {right_register} {left_register}")
             case TokenType.STAR:
-                libraries.multiply_function(
+                libraries.ccumul(
                     self, left_register, right_register)
 
         self.registers.push(right_register)

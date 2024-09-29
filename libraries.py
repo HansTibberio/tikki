@@ -1,5 +1,7 @@
 
-def left_shift(self, left_register, right_register):
+
+def cclls(self, left_register, right_register):
+    """Logical Left Shift"""
     counter_register = self.registers.counter()
 
     self.instructions.append(
@@ -14,7 +16,8 @@ def left_shift(self, left_register, right_register):
     self.instructions.append(f".end_lsh")
 
 
-def right_shift(self, left_register, right_register):
+def cclrs(self, left_register, right_register):
+    """Logical Right Shift"""
     counter_register = self.registers.counter()
 
     self.instructions.append(
@@ -29,13 +32,15 @@ def right_shift(self, left_register, right_register):
     self.instructions.append(f".end_rsh")
 
 
-def or_function(self, left_register, right_register):
+def ccor(self, left_register, right_register):
+    """Bitwise Or Operation"""
     self.instructions.append(
         f"NOR {left_register} {right_register} {left_register}")
     self.instructions.append(f"NOT {left_register} {left_register}")
 
 
-def multiply_function(self, left_register, right_register):
+def ccumul(self, left_register, right_register):
+    """Unsigned Multiplication"""
     result_register = self.registers.temporal()
     counter_register = self.registers.counter()
 
@@ -54,7 +59,8 @@ def multiply_function(self, left_register, right_register):
     self.instructions.append(f"MOV {result_register} {left_register}")
 
 
-def greater_than_or_equal_function(self, left_register, right_register):
+def ccuge(self, left_register, right_register):
+    """Comparator Greater or Equal than"""
     result_register = self.registers.flags()
 
     self.instructions.append(f"\nCMP {left_register} {right_register}")
@@ -66,7 +72,8 @@ def greater_than_or_equal_function(self, left_register, right_register):
     self.instructions.append(f".end_ge")
 
 
-def greater_than_function(self, left_register, right_register):
+def ccugt(self, left_register, right_register):
+    """Comparator Greater than"""
     result_register = self.registers.flags()
 
     self.instructions.append(f"CMP {left_register} {right_register}")
