@@ -1,5 +1,6 @@
 import sys
 import os
+import tkcode
 
 from generator import CodeGenerator
 from scanner import Scanner
@@ -59,7 +60,7 @@ class Tikki:
         tokens = Tikki_scanner.scan_tokens()
         Tikki_parser = Parser(tokens, error)
         statements = Tikki_parser.parse()
-
+        print(Tikki_parser.literal_pool)
         # Stop if there was a syntax error.
         if TikkiError.had_error:
             return
@@ -68,7 +69,8 @@ class Tikki:
         instructions = generator.generate(statements)
 
         with open('file.as', 'w') as file:
-            file.write("JMP .main\n\n.end\nHLT\n\n.main\n")
+            tkcode.header(file)
+            tkcode.stater(file)
             for instruction in generator.instructions:
                 file.write(instruction + '\n')
             file.write("\nJMP .end")
