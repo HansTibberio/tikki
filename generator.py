@@ -10,6 +10,14 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
     def __init__(self) -> None:
         self.registers = Registers()
         self.instructions = []
+        self.counters = {
+            'ccumul': 0,
+            'ccudiv': 0,
+            'ccuge': 0,
+            'ccgt': 0,
+            'cclls': 0,
+            'cclrs': 0,
+        }
 
     def generate(self, statements):
         for stmt in statements:
@@ -34,11 +42,12 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
 
         left_register = self.evaluate(expr.left)
         right_register = self.evaluate(expr.right)
- 
+
         match expr.operator.type:
             case TokenType.GREATER_EQUAL:
+                self.counters['ccuge'] += 1
                 libraries.ccuge(
-                    self, left_register, right_register)
+                    self, left_register, right_register, self.counters['ccuge'])
             case TokenType.PIPE:
                 libraries.ccor(self, left_register, right_register)
             case TokenType.CARET:
@@ -48,11 +57,13 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
                 self.instructions.append(
                     f"AND {left_register} {right_register} {left_register}")
             case TokenType.LEFT_SHIFT:
+                self.counters['cclls'] += 1
                 libraries.cclls(self, left_register,
-                                     right_register)
+                                right_register, self.counters['cclls'])
             case TokenType.RIGHT_SHIFT:
+                self.counters['cclrs'] += 1
                 libraries.cclrs(self, left_register,
-                                      right_register)
+                                right_register, self.counters['cclls'])
             case TokenType.PLUS:
                 self.instructions.append(
                     f"ADD {left_register} {right_register} {left_register}")
@@ -60,8 +71,9 @@ class CodeGenerator(expr.Visitor, stmt.Visitor):
                 self.instructions.append(
                     f"SUB {left_register} {right_register} {left_register}")
             case TokenType.STAR:
+                self.counters['ccumul'] += 1
                 libraries.ccumul(
-                    self, left_register, right_register)
+                    self, left_register, right_register, self.counters['ccumul'])
 
         self.registers.push(right_register)
         return left_register
