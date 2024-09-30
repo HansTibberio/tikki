@@ -8,7 +8,8 @@ The `.tki` instructions are loosely based on the [Lox](https://github.com/munifi
 - [x]  ***Parser***.
 - [x]  ***AST*** Abstract Syntax Tree representation.
 - [x]  ***Basic Error Handling***
-- [ ]  ***Constants***. Add support for constants. Constants must be declared before use, cannot be reassigned, and should be immutable.
+- [x]  ***Constants***. Add support for constants. Constants must be declared before use, cannot be reassigned, and should be immutable.
+- [ ]  ***Functions***. Add support for functions.
 - [ ]  ***Data type declarations***:  Support for variable types `u8`, `i8`, `u16`, `i16`, `char`
 - [ ]  ***Semantic Analysis***: Add semantic rules and type-checking to the compiler.
 - [ ]  ***Comments***: Improve documentation across functions and methods.
