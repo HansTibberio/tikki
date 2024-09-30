@@ -27,6 +27,9 @@ class Visitor:
     def visit_unary_expr(self, expr):
         pass
 
+    def visit_constant_expr(self, expr):
+        pass
+
     def visit_variable_expr(self, expr):
         pass
 
@@ -93,6 +96,14 @@ class Unary(Expr):
 
     def accept(self, visitor):
         return visitor.visit_unary_expr(self)
+
+
+class Constant(Expr):
+    def __init__(self, name):
+        self.name = name
+
+    def accept(self, visitor):
+        return visitor.visit_constant_expr(self)
 
 
 class Variable(Expr):

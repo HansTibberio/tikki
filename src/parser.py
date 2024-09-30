@@ -5,8 +5,9 @@ from error import ParseError
 
 
 class Parser:
-    def __init__(self, tokens, error):
+    def __init__(self, tokens, error, symbol_table):
         self.error = error
+        self.symbol_table = symbol_table
         self.tokens = tokens
         self.current = 0
         self.literal_pool = []
@@ -26,6 +27,8 @@ class Parser:
                 return self.function("function")
             if self.match(TokenType.LET):
                 return self.var_declaration()
+            if self.match(TokenType.CONST):
+                return self.const_declaration()
             return self.statement()
         except ParseError as error:
             self.synchronize()
@@ -118,6 +121,29 @@ class Parser:
         self.consume(TokenType.SEMICOLON, "Expected ';' after value.")
         return Print(value)
 
+    def const_declaration(self):
+        name = self.consume(TokenType.IDENTIFIER, "Expected constant name.")
+        self.consume(TokenType.EQUAL, "Expected '=' after constant name.")
+
+        # TODO review this, constants only can be digits or strings, not expressions.
+        initializer = self.primary()
+
+        if not isinstance(initializer, Literal):
+            raise ParseError(
+                name, "Constant can only be initialized with literals.", self.error)
+
+        self.consume(TokenType.SEMICOLON,
+                     "Expected ';' after constant declaration.")
+
+        check = self.symbol_table.lookup(name.lexeme)
+        if check is not None and name.lexeme == check.name:
+            raise ParseError(
+                name, f"Identifier '{name.lexeme}' is already declared.", self.error)
+
+        self.symbol_table.define(name.lexeme, "const", "")
+
+        return Const(name, initializer)
+
     def var_declaration(self):
         name = self.consume(TokenType.IDENTIFIER, "Expected variable name.")
 
@@ -127,6 +153,14 @@ class Parser:
 
         self.consume(TokenType.SEMICOLON,
                      "Expected ';' after variable declaration.")
+
+        check = self.symbol_table.lookup(name.lexeme)
+        if check is not None and check.symbol == "const":
+            raise ParseError(
+                name, f"Constant '{name.lexeme}' is already declared.", self.error)
+
+        self.symbol_table.define(name.lexeme, "var", "")
+
         return Var(name, initializer)
 
     def while_statement(self):
@@ -357,15 +391,24 @@ class Parser:
             return Literal(self.previous().literal)
 
         if self.match(TokenType.IDENTIFIER):
-            return Variable(self.previous())
+            identifier = self.previous()
+            check = self.symbol_table.lookup(identifier.lexeme)
+
+            if check == None:
+                raise ParseError(
+                    identifier, f"Undefined identifier '{identifier.lexeme}'.", self.error)
+            if check.symbol == "var":
+                return Variable(identifier)
+            elif check.symbol == "const":
+                return Constant(identifier)
 
         if self.match(TokenType.LEFT_PAREN):
             expr = self.expression()
             self.consume(TokenType.RIGHT_PAREN,
                          "Expected ')' after expression.")
             return Grouping(expr)
-
-        raise ParseError(self.peek(), "Expected expression.", self.error)
+        # TODO Check if this work. the original was self.peek(), I change it for self.previous
+        raise ParseError(self.previous(), "Expected expression.", self.error)
 
     def match(self, *types):
         """This checks to see if the current token has any of the given types.
@@ -385,7 +428,8 @@ class Parser:
         if self.check(type):
             return self.advance()
 
-        raise ParseError(self.peek(), message, self.error)
+        # TODO Check if this work. the original was self.peek(), I change it for self.previous
+        raise ParseError(self.previous(), message, self.error)
 
     def check(self, type_):
         """The check() method returns true if the current token is of the given type.

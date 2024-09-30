@@ -21,6 +21,9 @@ class Visitor:
     def visit_print_stmt(self, stmt):
         pass
 
+    def visit_const_stmt(self, stmt):
+        pass
+
     def visit_var_stmt(self, stmt):
         pass
 
@@ -70,6 +73,15 @@ class Print(Stmt):
 
     def accept(self, visitor):
         return visitor.visit_print_stmt(self)
+
+
+class Const(Stmt):
+    def __init__(self, name, initializer):
+        self.name = name
+        self.initializer = initializer
+
+    def accept(self, visitor):
+        return visitor.visit_const_stmt(self)
 
 
 class Var(Stmt):

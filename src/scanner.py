@@ -114,7 +114,7 @@ class Scanner:
                         self.advance()
                 else:
                     self.add_token(TokenType.SLASH)
-            case ' ' | '\r' | '\t':
+            case ' ' | '\r' | '\v' | '\f' | '\t':
                 # Ignore whitespace.
                 pass
             case '\n':
