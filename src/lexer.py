@@ -29,7 +29,6 @@ class Scanner:
             "not": TokenType.NOT,
             "null": TokenType.NULL,
             "or": TokenType.OR,
-            "print": TokenType.PRINT,
             "return": TokenType.RETURN,
             "self": TokenType.SELF,
             "super": TokenType.SUPER,

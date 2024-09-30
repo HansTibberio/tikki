@@ -3,4 +3,4 @@ __pycache__/
 *.mc
 *.red
 register_allocator/
-intermediate_representation.py
+*.txt

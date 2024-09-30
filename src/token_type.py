@@ -53,13 +53,12 @@ class TokenType(Enum):
     NOT = 42
     NULL = 43
     OR = 44
-    PRINT = 45
-    RETURN = 46
-    SELF = 47
-    SUPER = 48
-    TRUE = 49
-    LET = 50
-    WHILE = 51
+    RETURN = 45
+    SELF = 46
+    SUPER = 47
+    TRUE = 48
+    LET = 49
+    WHILE = 50
 
     # Data.
-    EOF = 52
+    EOF = 51

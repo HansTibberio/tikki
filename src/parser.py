@@ -38,8 +38,6 @@ class Parser:
             return self.for_statement()
         if self.match(TokenType.IF):
             return self.if_statement()
-        if self.match(TokenType.PRINT):
-            return self.print_statement()
         if self.match(TokenType.WHILE):
             return self.while_statement()
         if self.match(TokenType.LEFT_BRACE):
@@ -115,11 +113,6 @@ class Parser:
             else_branch = self.statement()
 
         return If(condition, then_branch, else_branch)
-
-    def print_statement(self):
-        value = self.expression()
-        self.consume(TokenType.SEMICOLON, "Expected ';' after value.")
-        return Print(value)
 
     def const_declaration(self):
         name = self.consume(TokenType.IDENTIFIER, "Expected constant name.")
@@ -468,7 +461,7 @@ class Parser:
 
             if self.peek().type in {TokenType.CONST, TokenType.CLASS, TokenType.FN, TokenType.LET,
                                     TokenType.FOR, TokenType.IF, TokenType.WHILE,
-                                    TokenType.PRINT, TokenType.RETURN}:
+                                    TokenType.RETURN}:
                 return
 
             self.advance()

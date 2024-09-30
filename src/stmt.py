@@ -18,9 +18,6 @@ class Visitor:
     def visit_if_stmt(self, stmt):
         pass
 
-    def visit_print_stmt(self, stmt):
-        pass
-
     def visit_const_stmt(self, stmt):
         pass
 
@@ -65,14 +62,6 @@ class If(Stmt):
 
     def accept(self, visitor):
         return visitor.visit_if_stmt(self)
-
-
-class Print(Stmt):
-    def __init__(self, expression):
-        self.expression = expression
-
-    def accept(self, visitor):
-        return visitor.visit_print_stmt(self)
 
 
 class Const(Stmt):

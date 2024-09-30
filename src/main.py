@@ -1,18 +1,16 @@
 import sys
 import os
-from intermediate_representation import IntermediateCodeGenerator
-import tkcode as tkcode
 
-from generator import CodeGenerator
-from scanner import Scanner
+from semantic import SemanticAnalizer
+from lexer import Scanner
 from parser import Parser
 from error import TikkiError
+from symbol_table import SymbolTable
 
 
 class Tikki:
     """Creates a new instance for Tikki, The Innovative Kitty Kompiler Interface"""
     args = sys.argv[1:]
-    had_runtime_error = False
 
     @classmethod
     def main(cls):
@@ -23,7 +21,7 @@ class Tikki:
         elif len(cls.args) == 1:
             cls.run_file(cls.args[0])
         else:
-            cls.run_prompt()
+            sys.exit(1)
 
     @classmethod
     def run_file(cls, path):
@@ -34,55 +32,47 @@ class Tikki:
 
                 # Indicate error in the exit code
                 if TikkiError.had_error:
-                    sys.exit(65)
-                if Tikki.had_runtime_error:
-                    sys.exit(70)
+                    sys.exit(1)
 
         except FileNotFoundError:
             print("File not found")
 
     @classmethod
-    def run_prompt(cls):
-        while True:
-            try:
-                line = input("> ")
-                if line == "":
-                    break
-                cls.run(line)
-                TikkiError.had_error = False
-            except (EOFError, KeyboardInterrupt):
-                print("\nExiting REPL...")
-                break
-
-    @classmethod
     def run(cls, source):
         error = TikkiError(source)
+        symbol_table = SymbolTable()
+
         Tikki_scanner = Scanner(source, error)
         tokens = Tikki_scanner.scan_tokens()
-        Tikki_parser = Parser(tokens, error)
+
+        Tikki_parser = Parser(tokens, error, symbol_table)
         statements = Tikki_parser.parse()
 
-        generator = IntermediateCodeGenerator()
-        generator.generate(statements)
+        analyzer = SemanticAnalizer(error, symbol_table)
+        analyzer.analyze(statements)
 
-        print("\n".join(generator.instructions))
-        print("Defined Variables:", generator.variables_defined)
-        print("Used Variables:", generator.variables_used)
+        print("Defined Variables:", analyzer.variables_defined)
+        print("Initialized Variables:", analyzer.variables_initialized)
+        print("Used Variables:", analyzer.variables_used)
+        print("Defined Constants:", analyzer.constants_defined)
+        print("Used Constants:", analyzer.constants_used)
+
         # Stop if there was a syntax error.
         if TikkiError.had_error:
             return
 
-        """
-        generator = CodeGenerator()
-        instructions = generator.generate(statements)
 
-        with open('file.as', 'w') as file:
-            tkcode.header(file)
-            tkcode.stater(file)
-            for instruction in generator.instructions:
-                file.write(instruction + '\n')
-            file.write("\nJMP .end")
-        """
+"""
+    generator = CodeGenerator()
+    instructions = generator.generate(statements)
+
+    with open('file.as', 'w') as file:
+        tkcode.header(file)
+        tkcode.stater(file)
+        for instruction in generator.instructions:
+            file.write(instruction + '\n')
+        file.write("\nJMP .end")
+    """
 
 
 if __name__ == "__main__":
