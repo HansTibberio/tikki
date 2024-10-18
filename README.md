@@ -32,5 +32,5 @@ The `.tki` instructions are loosely based on the [Lox](https://github.com/munifi
 Feel free to contribute and enhance the project!
 
 
-[license-link]:https://github.com/hanstibberio/tikki/blob/master/LICENSE
+[license-link]:https://github.com/hanstibberio/tikki/blob/main/LICENSE
 [license-badge]:https://img.shields.io/github/license/hanstibberio/tikki?style=for-the-badge&label=license&color=success
