@@ -1,4 +1,12 @@
-# The Innovative Kitty Kompiler Interface
+
+# <div align="center"> The Innovative Kitty Kompiler Interface </div>
+
+<div align="center">
+
+[![License][license-badge]][license-link]
+
+</div>
+
 
 **TIKKI** is a new and lightweight compiler for Tiny Kitten Instructions (`.tki`), designed to compile down to assembly language targeting the [BatPU-2](https://github.com/mattbatwings/BatPU-2) 8-bit instruction set architecture.
 ## Overview
@@ -24,6 +32,5 @@ The `.tki` instructions are loosely based on the [Lox](https://github.com/munifi
 Feel free to contribute and enhance the project!
 
 
-## License
-
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[license-link]:https://github.com/hanstibberio/tikki/blob/master/LICENSE
+[license-badge]:https://img.shields.io/github/license/hanstibberio/tikki?style=for-the-badge&label=license&color=success
